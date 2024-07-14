@@ -66,6 +66,7 @@ import android.view.WindowManagerGlobal;
 
 import com.android.internal.content.ReferrerIntent;
 import com.android.internal.util.yaap.PixelPropsUtils;
+import com.android.internal.util.penguin.GamesPropsUtils;
 
 import java.io.File;
 import java.lang.annotation.Retention;
@@ -1348,31 +1349,35 @@ public class Instrumentation {
         Application app = getFactory(context.getPackageName())
                 .instantiateApplication(cl, className);
         app.attach(context);
+        String packageName = context.getPackageName();
         PixelPropsUtils ppu = PixelPropsUtils.getInstance(context);
         if (ppu != null) {
             ppu.setProps(context.getPackageName());
         }
+        GamesPropsUtils.setProps(packageName);
         return app;
     }
-    
+
     /**
      * Perform instantiation of the process's {@link Application} object.  The
      * default implementation provides the normal system behavior.
-     * 
+     *
      * @param clazz The class used to create an Application object from.
      * @param context The context to initialize the application with
-     * 
+     *
      * @return The newly instantiated Application object.
      */
     static public Application newApplication(Class<?> clazz, Context context)
-            throws InstantiationException, IllegalAccessException, 
+            throws InstantiationException, IllegalAccessException,
             ClassNotFoundException {
         Application app = (Application)clazz.newInstance();
         app.attach(context);
+        String packageName = context.getPackageName();
         PixelPropsUtils ppu = PixelPropsUtils.getInstance(context);
         if (ppu != null) {
             ppu.setProps(context.getPackageName());
         }
+        GamesPropsUtils.setProps(packageName);
         return app;
     }
 
