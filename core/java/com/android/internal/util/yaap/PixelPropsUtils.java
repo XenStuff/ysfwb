@@ -25,10 +25,6 @@ import android.util.Log;
 import com.android.internal.R;
 
 import java.lang.reflect.Field;
-import java.security.KeyStore;
-import java.security.KeyStoreSpi;
-import java.security.Provider;
-import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -139,7 +135,6 @@ public final class PixelPropsUtils {
             return;
         }
         certifiedProps.forEach(PixelPropsUtils::setPropValue);
-        spoofProvider();
     }
 
     private static void setPropValue(String key, Object value) {
@@ -160,22 +155,6 @@ public final class PixelPropsUtils {
         }
     }
 
-    private static void spoofProvider() {
-        try {
-            KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
-            Field keyStoreSpi = keyStore.getClass().getDeclaredField("keyStoreSpi");
-            keyStoreSpi.setAccessible(true);
-            CustomKeyStoreSpi.keyStoreSpi = (KeyStoreSpi) keyStoreSpi.get(keyStore);
-            keyStoreSpi.setAccessible(false);
-        } catch (Throwable t) {
-            Logger.e("Couldn't get keyStoreSpi field!", t);
-        }
-        Provider provider = Security.getProvider("AndroidKeyStore");
-        Provider customProvider = new CustomProvider(provider);
-        Security.removeProvider("AndroidKeyStore");
-        Security.insertProviderAt(customProvider, 1);
-    }
-
     public static boolean getIsEnabled() {
         return sIsEnabled;
     }
@@ -183,7 +162,7 @@ public final class PixelPropsUtils {
     private static class Logger {
         private static final String TAG = "PixelPropsUtils";
 
-        private static void e(String msg, Throwable e) {
+        private static void e(String msg, Exception e) {
             Log.e(TAG, msg, e);
         }
 
