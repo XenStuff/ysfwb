@@ -69,6 +69,12 @@ public class GamesPropsUtils {
             "com.vng.pubgmobile",
     }; // Gaming rom fr
 
+    private static final Map<String, Object> propsToChangeROG6D = createMap("asus_ai2203_c", "Asus");
+    private static final String[] packagesToChangeROG6D = { // Asus ROG Phone 6D
+            "com.garena.game.df",
+            "com.proxima.dfm",
+    };
+
     private static final Map<String, Object> propsToChangeOP9P = createMap("LE2101", "OnePlus");
     private static final String[] packagesToChangeOP9P = { // spoof as OnePlus 9 PRO
             "com.epicgames.fortnite",
@@ -127,6 +133,8 @@ public class GamesPropsUtils {
             propsToChange = propsToChangeF5;
         } else if (Arrays.asList(packagesToChangeROG6).contains(packageName)) {
             propsToChange = propsToChangeROG6;
+        } else if (Arrays.asList(packagesToChangeROG6D).contains(packageName)) {
+            propsToChange = propsToChangeROG6D;
         } else if (Arrays.asList(packagesToChangeXP5).contains(packageName)) {
             propsToChange = propsToChangeXP5;
         }
