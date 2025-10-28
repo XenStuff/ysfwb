@@ -740,6 +740,7 @@ class HighBrightnessModeController {
         private boolean isLowPowerModeAllowed() {
             return Settings.Global.getInt(
                     mContext.getContentResolver(), Settings.Global.LOW_POWER_MODE_HBM, 1) != 0;
+        }
 
         private boolean isHBMForceAllowed() {
             return Settings.Global.getInt(
